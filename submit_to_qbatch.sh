@@ -42,8 +42,8 @@ source $AnalysisDir/Scripts/load_modules.sh # use source to load modules
 
 # call qbatch
 echo "when ready call..."
-echo "qbatch --options '-l matlab=1' --options ' -R y' --ppj 5 "$cicjobDir/cicjoblist
-echo "tip: increase ppj to use more memory"
+echo "qbatch --options '-l matlab=1' --options ' -R y' --ppj 6 "$cicjobDir/cicjoblist
+echo "tip: increase ppj to use more memory (6 is good for segmentation)"
 
 ## done
 unset JobName cicjobDir AnalysisDir
