@@ -5,12 +5,6 @@
 
 AnalysisDir=/data/scratch/zakell/vbm # make sure this is correct (name should not have any spaces)
 
-if [ "$#" -ne 1 ]; then
-  echo "error:Incorrect number of inputs"
-  echo "usage:./clone_github.sh <RepositoryName>"
-  exit 1
-fi
-
 # make Scripts directory if one does not already exist
 test ! -d $AnalysisDir/Scripts && mkdir $AnalysisDir/Scripts
 GithubDir=$AnalysisDir/Github
