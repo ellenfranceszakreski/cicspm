@@ -17,9 +17,8 @@ elif [ "$#" -eq 2 ]; then
 else
 	echo "error: Incorrect number of inputs."
 	echo "usage:  ./remake_cicjobs.sh <JobName> <optional subject list file>"
-	echo "e.g.  ./remake_cicjobs.sh smooth09"
+	echo "e.g.  ./remake_cicjobs.sh smooth09 #(to use default job)"
 	echo "e.g.  ./remake_cicjobs.sh smooth09 /data/scratch/zakell/sept19fmri/these_subjects.txt"
-	unset AnalysisDir
 	exit 2
 fi
 # check job name
@@ -27,29 +26,23 @@ JobName=$1
 # ensure JobName is not ""
 if [ ${#JobName} -eq 0 ]; then
 	echo "error: Invalid JobName. JobName must have at least 1 character."
-	unset AnalysisDir SubjectList JobName
 	exit 3
 fi
 # check for bad characters (i.e. not letters, numbers or underscores)
 if [ `echo "$JobName" | grep -Eo [^0-9a-zA-Z_] | wc -l` -ne 0  ]; then
 	echo "error: Invalid JobName. JobName must contain only letters, numbers or underscores"
-	unset AnalysisDir SubjectList JobName
 	exit 3
 fi
 # check subject list
 if [ ${#SubjectList} -eq 0 ]; then
 	echo "error: Invalid SubjectList. SubjectList must have at least 1 character."
-	unset AnalysisDir SubjectList JobName
 	exit 4
-fi
-if [ ! -f "$SubjectList" ]; then
+elif [ ! -f "$SubjectList" ]; then
 	echo "error: could not find subject list $SubjectList"
-	unset AnalysisDir SubjectList JobName
-	exit 4
-fi
-if [ `cat $SubjectList | wc -l` -eq 0 ]; then
-	echo "error: Subject list $SubjectList is empty."
 	exit 5
+elif [ `cat $SubjectList | wc -l` -eq 0 ]; then
+	echo "error: Subject list $SubjectList is empty."
+	exit 6
 fi
 # job directory
 JobDir=$AnalysisDir/cicjobs/$JobName # cic job .m files kept here
@@ -59,17 +52,23 @@ elif [ ! -d $AnalysisDir/cicjobs ]; then
 	# make cic jobs dir
 	mkdir $AnalysisDir/cicjobs
 fi
+# setupcluster template file
+setupclusterFile=$AnalysisDir/Scripts/setup_ciccluster_template.m
+if [ ! -f $setupclusterFile ]; then
+	echo "error: could not find "$setupclusterFile
+	exit 7
+fi
 # template file for this type of job
 TemplateFile=$AnalysisDir/Scripts/$JobName"_job_template.m"
 if [ -f $TemplateFile ]; then
 	echo "Found job file template at $TemplateFile"
 else
 	echo "error: Template file $template_file must be in $AnalysisDir/Scripts."
-	exit 7
+	exit 8
 fi
 # done checking
-
 echo "Using subject list"$SubjectList
+
 ## make new jobs
 # make new job directory
 mkdir $JobDir
@@ -83,8 +82,10 @@ do
 	# make job file for this subject
 	jobfile=$JobDir/$subx"_job.m"
 	touch $jobfile
+	# add code for setting up cluster
+	cat $setupclusterFile >> $jobfile
 	# prepend code setting variable "subx" to this subject
-	echo "subx = '"$subx"';" > $jobfile # note subject names are character vectors (e.g. 'sub2', 'sub10', etc.)
+	echo "subx = '"$subx"';" >> $jobfile # note subject names are character vectors (e.g. 'sub2', 'sub10', etc.)
 	# add code to job .m file (same for all subjects)
 	cat $TemplateFile >> $jobfile
 	echo "made "$jobfile
