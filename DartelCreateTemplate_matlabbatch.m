@@ -1,10 +1,10 @@
-function matlabbatch = matlabbatch_DartelCreateTemplate(channel_prefixes)
-% make_matlabbatch_DartelCreateTemplate make matlabbatch for dartel create 
+function matlabbatch = DartelCreateTemplate_matlabbatch(channel_prefixes)
+% DartelCreateTemplate_matlabbatch make matlabbatch for dartel create 
 % template using specific DARTEL imports.
+% e.g. DartelCreateTemplate_matlabbatch('rc1')
+% e.g. DartelCreateTemplate_matlabbatch('rc2')
+% e.g. DartelCreateTemplate_matlabbatch({'rc1','rc2'})
 
-% e.g. matlabbatch_DartelCreateTemplate('rc1')
-% e.g. matlabbatch_DartelCreateTemplate('rc2')
-% e.g. matlabbatch_DartelCreateTemplate({'rc1','rc2'})
 AnalysisDir='/data/scratch/zakell/vbm';
 InputDir=fullfile(AnalysisDir,'Anats'); %<-make sure this is correct
 %% validate input
