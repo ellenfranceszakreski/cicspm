@@ -35,7 +35,7 @@ cat $TemplateFile >> $JobFile
 echo "matlab -nodisplay -nodesktop -nosplash -r \"run('"$JobFile"')\"" >> $cicjoblistFile
 unset JobFile
 
-JobFile=$JobDir/DartelCreateTemplate_rc1_rc2.txt
+JobFile=$JobDir/DartelCreateTemplate_rc1_rc2.m
 touch $JobFile
 echo "channel_prefixes = {'rc1', 'rc2'};" > $JobFile
 echo "matlab -nodisplay -nodesktop -nosplash -r \"run('"$JobFile"')\"" >> $cicjoblistFile
