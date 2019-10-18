@@ -21,18 +21,20 @@ cicjoblistFile=$JobDir/cicjoblist
 touch $cicjoblistFile
 
 ## make each jobs
-JobFile=$JobDir/DartelCreateTemplate_rc1.txt
+JobFile=$JobDir/DartelCreateTemplate_rc1.m
 touch $JobFile
 echo "channel_prefixes = 'rc1';" > $JobFile
 cat $TemplateFile >> $JobFile
 echo "matlab -nodisplay -nodesktop -nosplash -r \"run('"$JobFile"')\"" >> $cicjoblistFile
+printf "done making %s\n" $JobFile
 unset JobFile
 
-JobFile=$JobDir/DartelCreateTemplate_rc2.txt
+JobFile=$JobDir/DartelCreateTemplate_rc2.m
 touch $JobFile
 echo "channel_prefixes = 'rc2';" > $JobFile
 cat $TemplateFile >> $JobFile
 echo "matlab -nodisplay -nodesktop -nosplash -r \"run('"$JobFile"')\"" >> $cicjoblistFile
+printf "done making %s\n" $JobFile
 unset JobFile
 
 JobFile=$JobDir/DartelCreateTemplate_rc1_rc2.m
@@ -40,6 +42,7 @@ touch $JobFile
 echo "channel_prefixes = {'rc1', 'rc2'};" > $JobFile
 echo "matlab -nodisplay -nodesktop -nosplash -r \"run('"$JobFile"')\"" >> $cicjoblistFile
 cat $TemplateFile >> $JobFile
+printf "done making %s\n" $JobFile
 
 echo "Done making jobs. see "$JobDir
 exit 0
