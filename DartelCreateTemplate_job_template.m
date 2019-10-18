@@ -16,7 +16,7 @@ matlabpool(cluster, number_of_cores);
 addpath([AnalysisDir,'/Scripts']);
 addpath(genpath([spm('dir'),'/config']));
 
-matlabbatch = matlabbatch_DartelCreateTemplate(channel_prefixes);
+matlabbatch = DartelCreateTemplate_matlabbatch(channel_prefixes);
 
 spm('defaults','PET'); % defaults for VBM
 spm_jobman('run', matlabbatch);
