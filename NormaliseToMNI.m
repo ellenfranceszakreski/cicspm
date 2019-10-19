@@ -80,10 +80,18 @@ matlabbatch{1}.spm.tools.dartel.mni_norm.bb = [NaN NaN NaN
 matlabbatch{1}.spm.tools.dartel.mni_norm.preserve = '<UNDEFINED>'; % 0=no modulation (preserve concentration) 1=modulation (preserve amount)
 
 matlabbatch{1}.spm.tools.dartel.mni_norm.fwhm = [fwhm, fwhm, fwhm];
+% make batches for no modulation and modulation
+mb0 = matlabbatch;
+mb0{1}.spm.tools.dartel.mni_norm.preserve = 0;
+mb1 = matlabbatch;
+mb1{1}.spm.tools.dartel.mni_norm.preserve = 1;
+clear matlabbatch
+
+
 %% run jobs
 spm('defaults','PET'); % same defaults for VBM
 % doing job with and without modulation
-spm_jobman('run', {matlabbatch, matlabbatch}, 0, 1); % do job without modulation then with modulation
+spm_jobman('run', {mb0, mb1}); % do job without modulation then with modulation
 disp('Jobs completed sucessfully');
 
 %% delete copies
@@ -91,7 +99,7 @@ disp('deleting copies of u_* c* and Template*6')
 delete(fullfile(smoothxxDir,'/c*sub*_anat.nii'));
 delete(fullfile(smoothxxDir,'/u_*sub*_anat_Template*.nii'));
 delete(fullfile(smoothxxDir,'/Template*.nii'));
-%% DONE
 
+%% DONE
 
 end
